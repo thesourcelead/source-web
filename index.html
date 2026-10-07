@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Source · Home</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EFEAE4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#181818" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232E8A48'/%3E%3Ccircle cx='32' cy='32' r='12' fill='none' stroke='%23EFEAE4' stroke-width='5'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --green: #2E8A48;
+    --bg: #EFEAE4;
+    --card: #FFFFFF;
+    --ink: #181818;
+    --ink-2: #444447;
+    --ink-3: #7C7E80;
+    --line: #D6D7D8;
+    --soft: #F6F3EF;
+    --red: #B83A2F;
+    --shadow: 0 1px 2px rgba(24,24,24,.05), 0 4px 16px rgba(24,24,24,.04);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #181818; --card: #222224; --ink: #EFEAE4; --ink-2: #D6D7D8; --ink-3: #9A9C9E;
+      --line: #36363A; --soft: #2A2A2D; --green: #3FA35C; --red: #E06A5E;
+      --shadow: none; color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font: 16px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Inter, Segoe UI, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 64px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: .02em; font-size: 18px; }
+  .brand .mark { width: 26px; height: 26px; border-radius: 8px; background: var(--green); display: grid; place-items: center; }
+  .brand .mark i { width: 11px; height: 11px; border-radius: 50%; border: 2.5px solid #EFEAE4; display: block; }
+  .hh { color: var(--ink-3); font-weight: 500; }
+  select.hh-pick { font: inherit; color: var(--ink-2); background: transparent; border: 0; padding: 0; }
+  .link { background: none; border: 0; padding: 6px 0; color: var(--ink-3); cursor: pointer; font-size: 14px; }
+  .link:hover { color: var(--ink); }
+
+  h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin: 28px 0 10px; }
+  .card { background: var(--card); border-radius: 18px; box-shadow: var(--shadow); padding: 18px; }
+  .card + .card { margin-top: 12px; }
+  .boxes .card + .card { margin-top: 0; }
+
+  /* you */
+  .you { display: flex; align-items: center; gap: 16px; }
+  .you .ring { flex: none; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; }
+  .you.in .ring { border-color: var(--green); }
+  .you .ring span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .you.in .ring span { background: var(--green); }
+  .you .big { font-size: 20px; font-weight: 600; line-height: 1.25; }
+  .you .sub { color: var(--ink-3); margin-top: 2px; }
+
+  /* boxes */
+  .boxes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); }
+  .box-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .box-name { font-size: 19px; font-weight: 600; }
+  .online { font-size: 13px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .online .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .online.on .dot { background: var(--green); }
+  .state { margin: 14px 0 4px; font-size: 28px; font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .state small { font-size: 15px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; }
+  .bar { height: 4px; border-radius: 2px; background: var(--soft); overflow: hidden; margin: 10px 0 2px; }
+  .bar i { display: block; height: 100%; background: var(--green); border-radius: 2px; transition: width 1s linear; }
+  .pads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+  .pad { background: var(--soft); border-radius: 12px; padding: 10px 10px 11px; min-height: 68px; }
+  .pad .n { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .pad .who { font-weight: 600; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pad .what { font-size: 13px; color: var(--ink-3); }
+  .pad .ask { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .pad .ask button { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 4px 9px; font-size: 13px; cursor: pointer; }
+  .pad .ask button:hover { border-color: var(--ink-3); }
+  .pad.fault .what { color: var(--red); }
+  .pad.empty .who { color: var(--ink-3); font-weight: 500; }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--ink-3); margin-top: 14px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; align-items: center; }
+  .btn { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 9px 16px; cursor: pointer; font-weight: 600; font-size: 15px; }
+  .btn:hover { border-color: var(--ink-3); }
+  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn.quiet { border-color: transparent; color: var(--ink-3); font-weight: 500; }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .note { font-size: 14px; color: var(--ink-2); }
+  .note.err { color: var(--red); }
+  details.act { margin-top: 12px; font-size: 14px; }
+  details.act summary { cursor: pointer; color: var(--ink-3); list-style: none; }
+  details.act summary::-webkit-details-marker { display: none; }
+  details.act ul { list-style: none; margin: 8px 0 0; padding: 0; }
+  details.act li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); color: var(--ink-2); }
+  details.act li time { color: var(--ink-3); white-space: nowrap; }
+
+  /* people */
+  .people { padding: 4px 18px; }
+  .person { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); }
+  .person:first-child { border-top: 0; }
+  .person .nm { font-weight: 600; }
+  .person .rl { color: var(--ink-3); font-size: 13px; }
+  .person .st { text-align: right; font-size: 14px; color: var(--ink-3); }
+  .person .st.in { color: var(--ink); }
+  .person .st .g { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--green); margin-right: 6px; vertical-align: 1px; }
+  .person .st button { margin-top: 6px; }
+
+  /* sign in */
+  .signin { max-width: 380px; margin: 12vh auto 0; }
+  .signin h1 { font-size: 26px; margin: 18px 0 6px; }
+  .signin p { color: var(--ink-3); margin: 0 0 20px; }
+  label.f { display: block; font-size: 13px; color: var(--ink-3); margin: 12px 0 6px; }
+  input.f { width: 100%; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+  input.f:focus { outline: 2px solid var(--green); outline-offset: -1px; border-color: transparent; }
+  .signin .btn { width: 100%; margin-top: 18px; padding: 12px; }
+
+  .empty-state { color: var(--ink-3); }
+  .fresh { font-size: 12px; color: var(--ink-3); text-align: center; margin-top: 28px; }
+
+  /* working dots — same rule as the app: fade in one, two, three, then together out */
+  .dots { display: inline-block; width: 1.1em; text-align: left; }
+  .dots i { font-style: normal; opacity: 0; animation: dot 2.4s infinite ease-in-out; }
+  .dots i:nth-child(2) { animation-delay: .4s; } .dots i:nth-child(3) { animation-delay: .8s; }
+  @keyframes dot { 0% { opacity: 0 } 15% { opacity: 1 } 70% { opacity: 1 } 85%, 100% { opacity: 0 } }
+  @media (prefers-reduced-motion: reduce) { .dots i { animation: none; opacity: 1; } .bar i { transition: none; } }
+
+  /* sheet */
+  .scrim { position: fixed; inset: 0; background: rgba(24,24,24,.38); display: grid; place-items: end center; padding: 16px; z-index: 10; }
+  @media (min-width: 600px) { .scrim { place-items: center; } }
+  .sheet { background: var(--card); border-radius: 20px; padding: 22px; width: 100%; max-width: 420px; }
+  .sheet h3 { margin: 0 0 8px; font-size: 20px; }
+  .sheet p { margin: 0 0 18px; color: var(--ink-2); }
+  .sheet .row { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// Public project address and publishable key — the same ones the firmware ships.
+// They grant nothing on their own; every read and command goes through Row Level Security.
+const SUPABASE_URL = 'https://zkqszazgqajnswgjomce.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6Aql85wd3q19nNiSaXMQBA_qIh0ZCH_';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+
+const $app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const dots = '<span class="dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span>';
+
+const S = {
+  user: null, households: [], hhId: null, role: null,
+  devices: [], status: {}, sessions: [], occupants: [], people: [], events: {}, naming: {},
+  online: {}, chans: [], cmd: {}, loadedAt: null, error: null,
+};
+try { S.hhId = localStorage.getItem('source.hh'); } catch {}
+
+// ---------- formatting ----------
+function left(secs) {
+  if (secs == null) return '';
+  secs = Math.max(0, Math.round(secs));
+  if (secs < 60) return `${secs} s`;
+  const h = Math.floor(secs / 3600), m = Math.ceil((secs % 3600) / 60);
+  if (h === 0) return `${m} min`;
+  return m === 60 ? `${h + 1} h` : `${h} h ${m} min`;
+}
+function ago(ts) {
+  if (!ts) return 'never';
+  const s = (Date.now() - new Date(ts).getTime()) / 1000;
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.round(s / 60)} min ago`;
+  if (s < 86400) return `${Math.round(s / 3600)} h ago`;
+  return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+const clock = ts => new Date(ts).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+const padWord = { empty: 'Empty', charging: 'Charging', full: 'Charged', cooling: 'Cooling down', fault: 'Needs a hand', off: 'Off' };
+
+// Seconds left in a box's session: the session's end time if we have one (server clock),
+// otherwise the box's own count, aged by how long ago it said so.
+function remainingFor(devId) {
+  const sess = S.sessions.filter(s => s.device_id === devId && s.ends_at);
+  if (sess.length) return Math.max(...sess.map(s => (new Date(s.ends_at) - Date.now()) / 1000));
+  const st = S.status[devId];
+  if (!st || st.lock !== 'locked' || st.remaining_s == null) return null;
+  return st.remaining_s - (Date.now() - st._at) / 1000;
+}
+
+// ---------- data ----------
+async function loadHouseholds() {
+  const { data, error } = await sb.from('household_members')
+    .select('household_id, role, display_name, households(name)').eq('user_id', S.user.id);
+  if (error) throw error;
+  S.households = (data || []).map(r => ({ id: r.household_id, role: r.role, name: r.households?.name || 'Home' }));
+  if (!S.households.find(h => h.id === S.hhId)) S.hhId = S.households[0]?.id || null;
+  S.role = S.households.find(h => h.id === S.hhId)?.role || null;
+}
+
+async function loadAll() {
+  if (!S.hhId) return;
+  const [dev, ppl, ses] = await Promise.all([
+    sb.from('devices').select('id, name, fw_version').eq('household_id', S.hhId).order('name'),
+    sb.from('household_people').select('id, display_name, role, linked_user_id').eq('household_id', S.hhId).order('created_at'),
+    // Open sessions this account may see: boxes here, plus our people in boxes elsewhere.
+    sb.from('sessions').select('id, device_id, host_household_id, owner_household_id, person_id, guest_label, is_guest, pad, started_at, ends_at, remaining_s, last_update')
+      .is('ended_at', null),
+  ]);
+  for (const r of [dev, ppl, ses]) if (r.error) throw r.error;
+  S.devices = dev.data; S.people = ppl.data;
+  S.sessions = ses.data.filter(s => s.host_household_id === S.hhId || s.owner_household_id === S.hhId);
+  const ids = S.devices.map(d => d.id);
+  if (ids.length) {
+    const [st, ev, oc] = await Promise.all([
+      sb.from('device_status').select('device_id, lock, remaining_s, session_total_s, pads, temp_c, thermal_level, wifi_rssi, fw_version, last_seen').in('device_id', ids),
+      sb.from('device_events').select('device_id, kind, detail, at').in('device_id', ids).order('at', { ascending: false }).limit(60),
+      sb.from('pad_occupants').select('device_id, pad, person_id, label, is_guest, since').in('device_id', ids),
+    ]);
+    // Who the box says is on each pad (named when a phone checks in; see 007_pad_identity.sql).
+    S.occupants = oc.error ? [] : (oc.data || []).map(o => ({ ...o, guest_label: o.label }));
+    if (st.error) throw st.error;
+    for (const r of st.data || []) {
+      const prev = S.status[r.device_id];
+      // A live broadcast newer than the table row wins.
+      if (!prev || !prev._live || prev._at < new Date(r.last_seen).getTime()) S.status[r.device_id] = { ...r, _at: Date.now() };
+    }
+    S.events = {};
+    for (const e of ev.data || []) (S.events[e.device_id] ||= []).length < 6 && S.events[e.device_id].push(e);
+  }
+  S.loadedAt = Date.now(); S.error = null;
+}
+
+// ---------- live ----------
+async function connectLive() {
+  for (const c of S.chans) sb.removeChannel(c);
+  S.chans = []; S.online = {};
+  await sb.realtime.setAuth();
+  for (const d of S.devices) {
+    const ch = sb.channel('device:' + d.id, { config: { private: true, presence: { key: 'web-' + S.user.id } } });
+    ch.on('broadcast', { event: 'status' }, ({ payload: p }) => {
+      const prev = S.status[d.id] || {};
+      S.status[d.id] = { ...prev, lock: p.lock, remaining_s: p.rem ?? prev.remaining_s, session_total_s: p.total ?? prev.session_total_s,
+        pads: p.bays ?? prev.pads, temp_c: p.temp ?? prev.temp_c, thermal_level: p.therm ?? prev.thermal_level,
+        wifi_rssi: p.rssi ?? prev.wifi_rssi, last_seen: new Date().toISOString(), _at: Date.now(), _live: true };
+      S.online[d.id] = true; render();
+    })
+    .on('broadcast', { event: 'command_result' }, ({ payload: p }) => settleCommand(d.id, p))
+    .on('presence', { event: 'sync' }, () => { S.online[d.id] = 'device' in ch.presenceState(); render(); })
+    .subscribe(async s => { if (s === 'SUBSCRIBED') { try { await ch.track({ via: 'web', at: Date.now() }); } catch {} } });
+    S.chans.push(ch);
+  }
+  const hh = sb.channel('household:' + S.hhId, { config: { private: true } });
+  for (const ev of ['session_started', 'session_ended', 'session_extended', 'pad_changed'])
+    hh.on('broadcast', { event: ev }, () => refresh());
+  hh.subscribe();
+  S.chans.push(hh);
+}
+
+// ---------- unlock ----------
+async function sendCommand(devId, command) {
+  S.cmd[devId] = { state: 'sending', command };
+  render();
+  const { data, error } = await sb.from('device_commands').insert({ device_id: devId, command }).select('id').single();
+  if (error) {
+    S.cmd[devId] = { state: 'error', msg: /row-level security/i.test(error.message) ? 'Only organizers can unlock a box.' : 'That didn’t send. Try again.' };
+    return render();
+  }
+  S.cmd[devId] = { state: 'waiting', id: data.id, command, since: Date.now() };
+  render();
+  // The box answers on its channel; this is the fallback if that message is missed.
+  const poll = setInterval(async () => {
+    const c = S.cmd[devId];
+    if (!c || c.id !== data.id || c.state !== 'waiting') return clearInterval(poll);
+    const { data: row } = await sb.from('device_commands').select('id, state, result').eq('id', data.id).maybeSingle();
+    if (row && ['done', 'failed', 'expired'].includes(row.state)) { clearInterval(poll); settleCommand(devId, row); }
+  }, 2500);
+}
+function settleCommand(devId, p) {
+  const c = S.cmd[devId];
+  if (!c || (c.id && p.id && c.id !== p.id)) return;
+  if (p.state === 'done') S.cmd[devId] = { state: 'ok', msg: /not locked/i.test(p.result || '') ? 'It was already unlocked.' : 'Unlocked. The lid is open.' };
+  else if (p.state === 'expired') S.cmd[devId] = { state: 'error', msg: 'The box didn’t pick that up — it may be offline. Use the button on the box.' };
+  else if (p.state === 'failed') S.cmd[devId] = { state: 'error', msg: /not locked/i.test(p.result || '') ? 'It was already unlocked.' : 'The box said no: ' + (p.result || 'unknown reason') };
+  else return;
+  render(); refresh();
+  setTimeout(() => { if (S.cmd[devId]?.state === 'ok') { delete S.cmd[devId]; render(); } }, 8000);
+}
+
+// "Who's this?" answered: the box names the pad and tells everyone (pad_changed).
+async function nameP(devId, pad, personId) {
+  const key = devId + ':' + pad;
+  S.naming[key] = true; render();
+  const { error } = await sb.from('device_commands').insert({ device_id: devId, command: `NAME ${pad} ${personId}` });
+  if (error) { delete S.naming[key]; S.error = 'That didn\u2019t send. Try again.'; return render(); }
+  setTimeout(async () => { delete S.naming[key]; await refresh(); }, 6000);
+}
+
+function confirmSheet({ title, body, go, label }) {
+  const el = document.createElement('div');
+  el.className = 'scrim';
+  el.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <h3 id="sh-t">${esc(title)}</h3><p>${esc(body)}</p>
+    <div class="row"><button class="btn quiet" data-x>Cancel</button><button class="btn primary" data-go>${esc(label)}</button></div></div>`;
+  const close = () => el.remove();
+  el.addEventListener('click', e => { if (e.target === el || e.target.hasAttribute('data-x')) close(); });
+  el.querySelector('[data-go]').addEventListener('click', () => { close(); go(); });
+  document.addEventListener('keydown', function k(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', k); } });
+  document.body.appendChild(el);
+  el.querySelector('[data-go]').focus();
+}
+
+// ---------- render ----------
+const personName = id => S.people.find(p => p.id === id)?.display_name;
+const sessName = s => personName(s.person_id) || s.guest_label || 'Someone';
+const isOrg = () => S.role === 'organizer';
+
+function renderSignIn(msg = '', busy = false) {
+  $app.innerHTML = `<form class="signin" id="f" autocomplete="on">
+    <div class="brand"><span class="mark"><i></i></span>Source</div>
+    <h1>Your home, at a glance.</h1>
+    <p>Sign in with the account you use in the Source app.</p>
+    <label class="f" for="em">Email</label><input class="f" id="em" type="email" autocomplete="username" required>
+    <label class="f" for="pw">Password</label><input class="f" id="pw" type="password" autocomplete="current-password" required>
+    <button class="btn primary" ${busy ? 'disabled' : ''}>${busy ? 'Signing in' + dots : 'Sign in'}</button>
+    <p class="note ${msg ? 'err' : ''}" style="margin-top:14px">${esc(msg)}</p>
+  </form>`;
+  document.getElementById('f').addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = document.getElementById('em').value.trim(), password = document.getElementById('pw').value;
+    renderSignIn('', true);
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) renderSignIn(/confirm/i.test(error.message) ? 'Confirm your email first — the link is in your inbox.' : 'That email and password don’t match.');
+  });
+}
+
+function renderYou() {
+  const me = S.people.find(p => p.linked_user_id === S.user.id);
+  if (!me) return `<div class="card you"><div class="ring"><span></span></div><div><div class="big">Your phone</div><div class="sub">This account isn’t on the family list yet.</div></div></div>`;
+  const s = S.sessions.find(x => x.person_id === me.id);
+  const onPad = !s && S.occupants.find(o => o.person_id === me.id);
+  if (onPad) {
+    const dv = S.devices.find(d => d.id === onPad.device_id), ps = S.status[onPad.device_id]?.pads?.[onPad.pad - 1]?.s;
+    return `<div class="card you"><div class="ring"><span></span></div><div><div class="big">Your phone is on pad ${onPad.pad} of the ${esc(dv?.name || 'box')}.</div><div class="sub">${esc(padWord[ps] || 'On the pad')} \u00b7 not locked yet</div></div></div>`;
+  }
+  if (!s) return `<div class="card you"><div class="ring"><span></span></div><div><div class="big">Your phone isn’t in a box.</div><div class="sub">${esc(me.display_name)}, it’s with you.</div></div></div>`;
+  const dev = S.devices.find(d => d.id === s.device_id);
+  const where = dev ? `the ${esc(dev.name)} box` : 'a box at another home';
+  const secs = s.ends_at ? (new Date(s.ends_at) - Date.now()) / 1000 : remainingFor(s.device_id);
+  return `<div class="card you in"><div class="ring"><span></span></div><div>
+    <div class="big">Your phone is in ${where}.</div>
+    <div class="sub">${s.pad ? `Pad ${s.pad} · ` : ''}${secs != null ? `<span data-left="${s.device_id}" data-ends="${s.ends_at || ''}">${left(secs)}</span> left` : 'locked'} · since ${clock(s.started_at)}</div>
+  </div></div>`;
+}
+
+function renderBox(d) {
+  const st = S.status[d.id] || {};
+  // Online: the box is present on its live channel, or reported in the last two minutes.
+  const on = !!S.online[d.id] || (st.last_seen && Date.now() - new Date(st.last_seen) < 120000);
+  const locked = st.lock === 'locked';
+  const secs = locked ? remainingFor(d.id) : null;
+  const total = st.session_total_s || null;
+  const pct = locked && total && secs != null ? Math.min(100, Math.max(0, 100 * (1 - secs / total))) : 0;
+  const here = S.sessions.filter(s => s.device_id === d.id);
+  const pads = (st.pads || [{}, {}, {}]).slice(0, 3).map((p, i) => {
+    const who = here.find(s => s.pad === i + 1)
+      || S.occupants.find(o => o.device_id === d.id && o.pad === i + 1 && p.s && p.s !== 'empty')
+      || (p.w ? { guest_label: p.w } : null);
+    const word = padWord[p.s] || '—';
+    const cls = p.s === 'fault' ? 'fault' : (!who && (p.s === 'empty' || !p.s) ? 'empty' : '');
+    // A phone nobody has named, lid open: ask "who's this?" (008_who_is_this.sql).
+    const naming = S.naming[d.id + ':' + (i + 1)];
+    const ask = !who && !locked && p.s && !['empty', 'off', 'fault'].includes(p.s) && S.people.length
+      ? (naming ? `<div class="what">Naming${dots}</div>`
+         : `<div class="ask" role="group" aria-label="Who's this on pad ${i + 1}?">${S.people.filter(pp => !S.occupants.some(o => o.device_id === d.id && o.person_id === pp.id)).map(pp =>
+             `<button data-name-dev="${d.id}" data-name-pad="${i + 1}" data-name-person="${pp.id}">${esc(pp.display_name.split(' ')[0])}</button>`).join('')}</div>`)
+      : '';
+    return `<div class="pad ${cls}"><div class="n">Pad ${i + 1}</div>
+      <div class="who">${who ? esc(sessName(who)) + (who.is_guest ? ' <span class="what">(guest)</span>' : '') : (p.s === 'empty' || !p.s ? 'Empty' : ask ? 'Who\u2019s this?' : 'A phone')}</div>
+      <div class="what">${p.s && p.s !== 'empty' ? word : (who ? 'In the box' : '')}</div>${ask}</div>`;
+  }).join('');
+  const unnamed = here.filter(s => !s.pad).map(sessName);
+  const c = S.cmd[d.id];
+  let act = '';
+  if (c?.state === 'sending' || c?.state === 'waiting') act = `<span class="note" role="status">${c.state === 'sending' ? 'Sending' : (on ? 'Unlocking' : 'Waiting for the box')}${dots}</span>`;
+  else if (c?.state === 'ok') act = `<span class="note" role="status">${esc(c.msg)}</span>`;
+  else if (c?.state === 'error') act = `<span class="note err" role="status">${esc(c.msg)}</span>`;
+  if (locked && isOrg() && !(c?.state === 'sending' || c?.state === 'waiting'))
+    act = `<button class="btn primary" data-end="${d.id}">Unlock now</button><button class="btn quiet" data-emerg="${d.id}">Emergency release</button>` + (act ? ` ${act}` : '');
+  const evs = (S.events[d.id] || []).map(e => `<li><span>${esc(eventText(e))}</span><time>${ago(e.at)}</time></li>`).join('');
+  return `<div class="card">
+    <div class="box-head"><div class="box-name">${esc(d.name)}</div>
+      <span class="online ${on ? 'on' : ''}"><span class="dot"></span>${on ? 'Online' : `Last seen ${ago(st.last_seen)}`}</span></div>
+    <div class="state">${locked ? (secs != null ? `<span data-left="${d.id}">${left(secs)}</span> <small>left</small>` : 'Locked') : st.lock === 'opening' ? 'Opening' : st.lock ? 'Open <small>· ready</small>' : '<small>No reading yet</small>'}</div>
+    ${locked ? `<div class="bar"><i data-bar="${d.id}" style="width:${pct}%"></i></div>` : ''}
+    ${unnamed.length ? `<div class="note">${esc(unnamed.join(', '))} in this box</div>` : ''}
+    <div class="pads">${pads}</div>
+    <div class="meta">${st.temp_c != null ? `<span>${Math.round(st.temp_c)}°C inside</span>` : ''}${st.wifi_rssi ? `<span>Wi-Fi ${st.wifi_rssi > -60 ? 'strong' : st.wifi_rssi > -72 ? 'good' : 'weak'}</span>` : ''}${st.thermal_level ? '<span>Cooling to protect phones</span>' : ''}<span>v${esc(st.fw_version || d.fw_version || '?')}</span></div>
+    ${act ? `<div class="actions">${act}</div>` : ''}
+    ${evs ? `<details class="act"><summary>Recent activity</summary><ul>${evs}</ul></details>` : ''}
+  </div>`;
+}
+function eventText(e) {
+  return ({ session_started: 'Session started', session_done: 'Session finished', session_ended: 'Ended early',
+    emergency_release: 'Emergency release', remote_command: 'Command from the app', pad_fault: 'A pad needed a hand',
+    thermal_step_up: 'Cooling to protect phones', thermal_step_down: 'Back to normal charging', claimed: 'Added to this home' }[e.kind]) || e.kind.replace(/_/g, ' ');
+}
+
+function renderPeople() {
+  if (!S.people.length) return '';
+  const rows = S.people.map(p => {
+    const s = S.sessions.find(x => x.person_id === p.id);
+    const dev = s && S.devices.find(d => d.id === s.device_id);
+    const away = s && !dev;
+    const secs = s ? (s.ends_at ? (new Date(s.ends_at) - Date.now()) / 1000 : remainingFor(s.device_id)) : null;
+    const role = { organizer: 'Organizer', member: 'Member', child: 'Child' }[p.role] || '';
+    const st = s
+      ? `<span class="g"></span>${away ? 'In a box at another home' : `${esc(dev.name)}${s.pad ? ', pad ' + s.pad : ''}`}${secs != null ? ` · <span data-left="${s.device_id}" data-ends="${s.ends_at || ''}">${left(secs)}</span> left` : ''}`
+        + (away && isOrg() ? `<br><button class="btn" data-away="${s.device_id}" data-name="${esc(p.display_name)}">Unlock</button>${awayNote(s.device_id)}` : '')
+      : (() => { const o = S.occupants.find(x => x.person_id === p.id); const dv = o && S.devices.find(d => d.id === o.device_id);
+          return o ? `On ${esc(dv?.name || 'a box')}, pad ${o.pad} \u00b7 not locked` : 'Phone with them'; })();
+    return `<div class="person"><div><div class="nm">${esc(p.display_name)}</div><div class="rl">${role}</div></div><div class="st ${s ? 'in' : ''}">${st}</div></div>`;
+  }).join('');
+  return `<h2>People</h2><div class="card people">${rows}</div>`;
+}
+function awayNote(devId) {
+  const c = S.cmd[devId];
+  if (!c) return '';
+  if (c.state === 'sending' || c.state === 'waiting') return `<div class="note">Unlocking${dots}</div>`;
+  return `<div class="note ${c.state === 'error' ? 'err' : ''}">${esc(c.msg)}</div>`;
+}
+
+function render() {
+  if (!S.user) return;
+  if (!S.households.length) {
+    $app.innerHTML = `${topBar()}<div class="card empty-state">This account isn’t part of a home yet. Join or create one in the Source app, then come back.</div>`;
+    return bindTop();
+  }
+  const boxes = S.devices.length
+    ? `<div class="boxes">${S.devices.map(renderBox).join('')}</div>`
+    : `<div class="card empty-state">No boxes in this home yet. Add one in the Source app: Settings → Your Sources.</div>`;
+  const focusKey = document.activeElement?.dataset && Object.keys(document.activeElement.dataset)[0];
+  $app.innerHTML = `${topBar()}
+    <h2>You</h2>${renderYou()}
+    <h2>Boxes</h2>${boxes}
+    ${renderPeople()}
+    <div class="fresh">${S.error ? `<span class="note err">${esc(S.error)}</span>` : S.loadedAt ? `Updated ${ago(S.loadedAt)}` : `Loading${dots}`}</div>`;
+  bindTop();
+  $app.querySelectorAll('[data-end]').forEach(b => b.addEventListener('click', () => {
+    const d = S.devices.find(x => x.id === b.dataset.end);
+    confirmSheet({ title: `Unlock the ${d.name} box?`, body: 'The session ends now and the lid opens. Everyone in it gets their phone back.', label: 'Unlock now', go: () => sendCommand(d.id, 'END') });
+  }));
+  $app.querySelectorAll('[data-name-pad]').forEach(b => b.addEventListener('click', () => nameP(b.dataset.nameDev, +b.dataset.namePad, b.dataset.namePerson)));
+  $app.querySelectorAll('[data-emerg]').forEach(b => b.addEventListener('click', () => {
+    const d = S.devices.find(x => x.id === b.dataset.emerg);
+    confirmSheet({ title: 'Emergency release?', body: `The ${d.name} box unlocks right away, and the release is logged in its activity.`, label: 'Release now', go: () => sendCommand(d.id, 'EMERGENCY') });
+  }));
+  $app.querySelectorAll('[data-away]').forEach(b => b.addEventListener('click', () => {
+    confirmSheet({ title: `Unlock ${b.dataset.name}’s box?`, body: 'This box is at another home. Unlocking ends the whole session there, for everyone in it.', label: 'Unlock', go: () => sendCommand(b.dataset.away, 'END') });
+  }));
+  if (focusKey) $app.querySelector(`[data-${focusKey}]`)?.focus();
+}
+function topBar() {
+  const hh = S.households.length > 1
+    ? `<select class="hh-pick" id="hh" aria-label="Home">${S.households.map(h => `<option value="${h.id}" ${h.id === S.hhId ? 'selected' : ''}>${esc(h.name)}</option>`).join('')}</select>`
+    : `<span class="hh">${esc(S.households[0]?.name || '')}</span>`;
+  return `<header class="top"><div class="brand"><span class="mark"><i></i></span>Source ${hh}</div><button class="link" id="out">Sign out</button></header>`;
+}
+function bindTop() {
+  document.getElementById('out')?.addEventListener('click', () => sb.auth.signOut());
+  document.getElementById('hh')?.addEventListener('change', async e => {
+    S.hhId = e.target.value; try { localStorage.setItem('source.hh', S.hhId); } catch {}
+    S.role = S.households.find(h => h.id === S.hhId)?.role; S.status = {}; S.cmd = {};
+    await refresh(); await connectLive();
+  });
+}
+
+// Countdown ticks without rebuilding the page.
+setInterval(() => {
+  document.querySelectorAll('[data-left]').forEach(el => {
+    const secs = el.dataset.ends ? (new Date(el.dataset.ends) - Date.now()) / 1000 : remainingFor(el.dataset.left);
+    if (secs != null) el.textContent = left(secs);
+  });
+  document.querySelectorAll('[data-bar]').forEach(el => {
+    const id = el.dataset.bar, t = S.status[id]?.session_total_s, secs = remainingFor(id);
+    if (t && secs != null) el.style.width = Math.min(100, Math.max(0, 100 * (1 - secs / t))) + '%';
+  });
+}, 1000);
+
+let refreshing = null;
+async function refresh() {
+  if (refreshing) return refreshing;
+  refreshing = (async () => {
+    try { await loadAll(); } catch (e) { S.error = 'Couldn’t reach Source just now. Retrying.'; }
+    render();
+  })().finally(() => { refreshing = null; });
+  return refreshing;
+}
+// Belt and braces: live channels do the work; this catches anything they miss.
+setInterval(() => { if (S.user && document.visibilityState === 'visible') refresh(); }, 20000);
+document.addEventListener('visibilitychange', () => { if (S.user && document.visibilityState === 'visible') refresh(); });
+
+async function start(session) {
+  if (!session) { S.user = null; for (const c of S.chans) sb.removeChannel(c); S.chans = []; return renderSignIn(); }
+  if (S.user?.id === session.user.id) return;
+  S.user = session.user;
+  $app.innerHTML = `<div class="fresh">Loading${dots}</div>`;
+  try { await loadHouseholds(); await loadAll(); } catch (e) { S.error = 'Couldn’t reach Source just now. Retrying.'; }
+  render();
+  try { await connectLive(); } catch {}
+}
+sb.auth.onAuthStateChange((_ev, session) => { setTimeout(() => start(session), 0); });
+</script>
+</body>
+</html>
